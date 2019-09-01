@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   sodipodi:docname="Diagrama de tiempo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.2232947"
+     inkscape:cx="461.91268"
+     inkscape:cy="612.88472"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="715"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.15493375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 22.45064,114.19014 c 0.267269,41.24099 0.267269,41.14934 0.267269,41.14934 l 142.721931,0.27494"
+       id="path10"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="opacity:0.81000001;fill:#ffb380;fill-opacity:1;stroke-width:0.26458332"
+       id="rect12"
+       width="104.23512"
+       height="12.294398"
+       x="30.468725"
+       y="136.37102" />
+    <rect
+       style="opacity:0.81000001;fill:#d35f5f;fill-opacity:1;stroke-width:0.26458332"
+       id="rect14"
+       width="30.201456"
+       height="12.294407"
+       x="134.70384"
+       y="136.37102" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.10699892px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31918743"
+       x="64.549614"
+       y="123.93112"
+       id="text18"
+       transform="scale(0.85687242,1.1670349)"><tspan
+         sodipodi:role="line"
+         id="tspan16"
+         x="64.549614"
+         y="123.93112"
+         style="font-size:5.10699892px;stroke-width:0.31918743">Incendio cosume una casa</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot20"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.24869118,0,0,0.30681851,63.388661,62.198569)"><flowRegion
+         id="flowRegion22"
+         style="font-size:16px;text-align:center;text-anchor:middle"><rect
+           id="rect24"
+           width="138.76776"
+           height="41.093288"
+           x="278.80209"
+           y="243.68697"
+           style="font-size:16px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+         id="flowPara26">Recuento de daños</flowPara></flowRoot>    <rect
+       style="opacity:0.81000001;fill:#99ff55;fill-opacity:1;stroke-width:0.28944215"
+       id="rect28"
+       width="17.534252"
+       height="12"
+       x="30.468725"
+       y="124.37102" />
+    <rect
+       style="opacity:0.81000001;fill:#5fd3bc;fill-opacity:1;stroke-width:0.28690559"
+       id="rect34"
+       width="37.230656"
+       height="12"
+       x="48.002975"
+       y="124.37102" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="31.938986"
+       y="131.82442"
+       id="text42"><tspan
+         sodipodi:role="line"
+         id="tspan40"
+         x="31.938986"
+         y="131.82442"
+         style="font-size:4.23333311px;stroke-width:0.26458332">Alarma</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot44"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-2.6458333,16.630952)"><flowRegion
+         id="flowRegion46"
+         style="font-size:16px;text-align:center;text-anchor:middle"><rect
+           id="rect48"
+           width="142.14285"
+           height="51.42857"
+           x="191.07143"
+           y="412.16254"
+           style="font-size:16px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+         id="flowPara50">Bomberos en camino</flowPara></flowRoot>    <rect
+       style="opacity:0.81000001;fill:#aa87de;fill-opacity:1;stroke-width:0.26458332"
+       id="rect58"
+       width="49.470215"
+       height="12"
+       x="85.233627"
+       y="124.37102" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot60"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,45.231892,56.877427)"><flowRegion
+         id="flowRegion62"
+         style="font-size:16px;text-align:center;text-anchor:middle"><rect
+           id="rect64"
+           width="164.65486"
+           height="82.83252"
+           x="159.6041"
+           y="256.81894"
+           style="font-size:16px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
+         id="flowPara66">Bomberos apagando el fuego</flowPara></flowRoot>    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.5"
+       d="m 30.468726,124.37102 v 12 12.2944 l 0.0056,7.56207 v -0.0945"
+       id="path70"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.5"
+       d="m 48.002975,124.37102 -0.0281,32.21225 v 0"
+       id="path72"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.5"
+       d="m 85.233625,124.37102 0.02535,32.12873 v 0"
+       id="path74"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.5"
+       d="m 134.70384,124.37102 -0.0167,32.07861 v 0"
+       id="path76"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;opacity:0.5"
+       d="m 164.9053,136.37102 v 12.2944 l 0.0334,7.85103"
+       id="path78"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-154.66998"
+       y="19.712257"
+       id="text82"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan80"
+         x="-154.66998"
+         y="19.712257"
+         style="font-size:7.05555534px;stroke-width:0.26458332"
+         rotate="0 0 0 0 0 0 0 0 0 0 0 0">Paralelismo</tspan><tspan
+         sodipodi:role="line"
+         x="-154.66998"
+         y="32.941422"
+         style="stroke-width:0.26458332"
+         id="tspan84" /></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot86"
+       style="font-style:normal;font-weight:normal;font-size:26.66666794px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-70.810453,7.6469171)"><flowRegion
+         id="flowRegion88"
+         style="font-size:26.66666794px"><rect
+           id="rect90"
+           width="153.17918"
+           height="50.289017"
+           x="579.19073"
+           y="601.13239"
+           style="font-size:26.66666794px" /></flowRegion><flowPara
+         id="flowPara92">Tiempo</flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="27.375963"
+       y="158.13197"
+       id="text96"><tspan
+         sodipodi:role="line"
+         id="tspan94"
+         x="27.375963"
+         y="167.49574"
+         style="stroke-width:0.26458332" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="28.59947"
+       y="159.96722"
+       id="text100"><tspan
+         sodipodi:role="line"
+         id="tspan98"
+         x="28.59947"
+         y="159.96722"
+         style="font-size:4.23333311px;stroke-width:0.26458332">t0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="46.187382"
+       y="159.66138"
+       id="text104"><tspan
+         sodipodi:role="line"
+         id="tspan102"
+         x="46.187382"
+         y="159.66138"
+         style="font-size:4.23333311px;stroke-width:0.26458332">t1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="83.657272"
+       y="159.50844"
+       id="text108"><tspan
+         sodipodi:role="line"
+         id="tspan106"
+         x="83.657272"
+         y="159.50844"
+         style="font-size:4.23333311px;stroke-width:0.26458332">t2</tspan><tspan
+         sodipodi:role="line"
+         x="83.657272"
+         y="164.80011"
+         style="font-size:4.23333311px;stroke-width:0.26458332"
+         id="tspan110" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="132.90341"
+       y="159.8143"
+       id="text114"><tspan
+         sodipodi:role="line"
+         id="tspan112"
+         x="132.90341"
+         y="159.8143"
+         style="font-size:4.23333311px;stroke-width:0.26458332">t3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="163.33813"
+       y="159.66136"
+       id="text118"><tspan
+         sodipodi:role="line"
+         id="tspan116"
+         x="163.33813"
+         y="159.66136"
+         style="font-size:4.23333311px;stroke-width:0.26458332">t4</tspan></text>
+  </g>
+</svg>
