@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.73"
-     inkscape:cx="384.45401"
+     inkscape:cx="545.51837"
      inkscape:cy="672.94478"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -83,20 +83,7 @@
          x="64.549614"
          y="123.93112"
          style="font-size:5.10699892px;stroke-width:0.31918743">Incendio cosume una casa</tspan></text>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot20"
-       style="font-style:normal;font-weight:normal;font-size:12.77115726px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(0.24869118,0,0,0.30681851,63.388661,65.563213)"><flowRegion
-         id="flowRegion22"
-         style="font-size:12.77115726px;text-align:center;text-anchor:middle"><rect
-           id="rect24"
-           width="138.76776"
-           height="41.093288"
-           x="278.80209"
-           y="243.68697"
-           style="font-size:12.77115726px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
-         id="flowPara26">Recuento de daños</flowPara></flowRoot>    <rect
+    <rect
        style="opacity:0.81000001;fill:#99ff55;fill-opacity:1;stroke-width:0.28944215"
        id="rect28"
        width="17.534252"
@@ -277,5 +264,16 @@
          x="90.845375"
          y="131.67365"
          style="font-size:4.23333311px;stroke-width:0.26458332">Apagando el fuego </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="135.80925"
+       y="143.90872"
+       id="text52"><tspan
+         sodipodi:role="line"
+         id="tspan50"
+         x="135.80925"
+         y="143.90872"
+         style="font-size:3.52777767px;stroke-width:0.26458332">Recuento daños</tspan></text>
   </g>
 </svg>
