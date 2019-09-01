@@ -11,4 +11,4 @@
 5.  Bomberos recuentan los daños.
 
 ![Alt text](./Diagrama de tiempo.svg)
-
+<img src="./Diagrama de tiempo.svg">
