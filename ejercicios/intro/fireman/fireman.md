@@ -9,4 +9,6 @@
 4.  Bomberos apagando fuego.
     
 5.  Bomberos recuentan los daños.
+
 ![Alt text](./Diagramas de tiempo.svg)
+<img src="./Diagramas de tiempo.svg">
