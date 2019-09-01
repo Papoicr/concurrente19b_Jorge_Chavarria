@@ -3,7 +3,9 @@
 Se saca cuantos archivos se le reparten a cada computadora
 
 $\frac{7200000}{28}$ = 257142 y el residuo es 24, este 24 se ditribuye en 24 computadoras
-Se le restan ese numero a las 7,2 TB ya que una computadora ya tiene los datos lo que genera la formula
+
+Se le resta ese numero a las 7,2 TB ya que una computadora ya tiene los datos lo que genera la formula
 
 L = 0.02s + $\frac{6942857MB}{10,625MB/s}$ 
+
 L = 653445,8547s aprox 181 horas
