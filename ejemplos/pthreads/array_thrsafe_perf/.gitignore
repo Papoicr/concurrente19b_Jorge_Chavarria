@@ -1,3 +1,4 @@
 array_reentrant
 array_thrsafe_mutex
 array.pro.user
+array_thrsafe_perf

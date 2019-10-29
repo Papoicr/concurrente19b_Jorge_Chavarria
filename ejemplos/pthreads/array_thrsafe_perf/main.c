@@ -112,7 +112,7 @@ int test_arrays(shared_t* shared)
 	free(thread_data);
 	free(threads);
 
-	print_array("array1", shared->mutex_array);
+	//print_array("array1", shared->mutex_array);
 	//print_array("array2", shared->rwlock_array);
 
 	return 0;
