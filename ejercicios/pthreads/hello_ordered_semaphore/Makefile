@@ -1,25 +1,25 @@
-CC=gcc
+APPNAME=$(shell basename $(shell pwd))
+
+CC=cc
 CXX=g++
-FLAGS=-g -Wall -Wextra
-CFLAGS=$(FLAGS) -std=c11
-CXXFLAGS=$(FLAGS) -std=c++11
-LIBS= -pthread
+FLAGS=-g -Wall -Wextra -lm
+CFLAGS=$(FLAGS)
+CXXFLAGS=$(FLGAS)
+LIBS=-pthread
+CLIBS=$(LIBS)
+CXXLIBS=$(LIBS)
 
-HEADERS=$(wildcard *.h)
-SOURCES=$(wildcard *.c*)
-COBJECTS=$(SOURCES:.c=.o)
-OBJECTS=$(COBJECTS:.cpp=.o)
-EXECUTABLE=$(shell basename `pwd`)
+all:$(APPNAME)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) -o $@ $^ $(CFLAGS) $(LIBS)
+%: %.c
+	$(CC) $(CFLAGS) $^ -o $@ $(CLIBS)
+%: %.cpp
+	$(CXX) &(CXXFLAGS) $^ -o $(CXXLIBS)
 
-%.o: %.cpp $(HEADERS)
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
-
-%.o: %.c $(HEADERS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+.PHONY: gitignore
+gitignore:
+	echo $(APPNAME) > .gitignore
 
 .PHONY: clean
 clean:
-	rm -rf $(EXECUTABLE) *.o *.dSYM *~
+	rm -f $(APPNAME)

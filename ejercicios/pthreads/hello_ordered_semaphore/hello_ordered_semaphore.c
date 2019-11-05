@@ -62,6 +62,7 @@ int main (int argc, char* argv[])
 		+ 1e-9 * (finish_time.tv_nsec - start_time.tv_nsec);
 	
 	printf("Hello execution time %.9lfs\n", elapsed_seconds);
+	free(shared_data->semaphores);
 	free(shared_data);
 	return 0;	
 }
