@@ -1,0 +1,19 @@
+main (lowerBound, upperBound, divisionQuantity):
+	area = trapezoidal_area ()
+
+trapezoidal_area (function, lowerBound, upperBound, divisionQuantity):
+	verify if lowerBound is a valid number for the function then:
+		integral := image(lowerBound) + image(upperBound)
+		IntervalLength := upperBound - lowerBound
+		subIntervalLength := IntervalLength / divisionQuantity
+		Repeat from lowerBound + subIntervalLength to upperBound - subIntervalLength, increasing lowerBound by subIntervalLength:
+			integral := integral + 2 * image(lowerBound)
+		
+		return integral * (subIntervalLength / 2)
+	else return error
+
+image (x_value):
+	if x_value < 0 then return error
+	else
+		y_value := sqrt(x(x² -6x + 9)/9)
+		return y_value

@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <semaphore.h>
 
 typedef struct
 {
 	size_t thread_counter; //contador de threads
-	pthread_mutex_t* mutexes; //array de mutexes
+    sem_t* semaphores; //array de semaforo
 }shared_data_t;
 
 typedef struct
@@ -25,26 +26,25 @@ int main (int argc, char* argv[])
 	shared_data_t* shared_data = (shared_data_t*) calloc(1, sizeof(shared_data_t)); 
 	if (shared_data == NULL)
 		return (void)fprintf(stderr, "error: could not allocate shared memory\n"), 1;
-	
+    #include <semaphore.h>
+
 	//cantidad de threads por default
-	shared_data->thread_counter = sysconf(_SC_NPROCESSORS_ONLN); 
-	
+    shared_data->thread_counter = (size_t)(sysconf(_SC_NPROCESSORS_ONLN));
+    #include <semaphore.h>
+
 	//cantidad de threads si se recibe parámetro
 	if(argc >= 2)
 		shared_data->thread_counter = strtoull(argv[1], NULL, 10);	
 	
-	//se asigna el espacio de memoria para el array
-	shared_data->mutexes = (pthread_mutex_t*) malloc(shared_data->thread_counter * sizeof(pthread_mutex_t)); 
+    //se asigna el espacio de memoria para el array de semaforos
+    shared_data->semaphores = (sem_t*) malloc(shared_data->thread_counter * sizeof(sem_t));
 	
-	//Se crean todos los mutex
-	for(size_t index = 0; index < shared_data->thread_counter; ++index)
-		pthread_mutex_init(&shared_data->mutexes[index], /*attr*/ NULL);
+    //Se crean todos los mutex, el primero se crea por separado con un valor de 1, todos los demás se crean con 0
+    sem_init(&shared_data->semaphores[0], 0, 1);
+    for(size_t index = 1; index < shared_data->thread_counter; ++index)
+        sem_init(&shared_data->semaphores[index], 0, 0);
 	
-	//Se bloquean todos los mutex menos el primero
-	for(size_t index = 1; index < shared_data->thread_counter; ++index)
-		pthread_mutex_lock(&shared_data->mutexes[index]);
-	
-	//Inicia el coteo del tiempo de creación
+    //Inicia el conteo del tiempo de creación
 	struct timespec start_time;
 	clock_gettime(CLOCK_MONOTONIC, &start_time);
 	
@@ -62,7 +62,7 @@ int main (int argc, char* argv[])
 		+ 1e-9 * (finish_time.tv_nsec - start_time.tv_nsec);
 	
 	printf("Hello execution time %.9lfs\n", elapsed_seconds);
-	free(shared_data->mutexes);
+	free(shared_data->semaphores);
 	free(shared_data);
 	return 0;	
 }
@@ -114,15 +114,15 @@ void* run(void* data)
 	size_t thread_num = private_data->thread_num;
 	size_t thread_counter = shared_data->thread_counter;
 	
-	//La zona crítica se encierra en el mutex correspondiente y se espera a que habiliten el mutex 
-	pthread_mutex_lock(&shared_data->mutexes[thread_num]); 
+    //La zona crítica se controla con el semaforo correspondiente y se espera a que habiliten el semaforo en caso de que este bloqueado
+    sem_wait(&shared_data->semaphores[thread_num]);
 	printf("Hello world from secondary thread %zu of %zu\n", thread_num, thread_counter);
 	
 	//Revisa si todavía hay un mutex que abrir
 	if(thread_num < thread_counter-1)
 	{
-		pthread_mutex_unlock(&shared_data->mutexes[thread_num+1]); 
+        sem_post(&shared_data->semaphores[thread_num+1]);
 	}
-	pthread_mutex_unlock(&shared_data->mutexes[thread_num]);
+    sem_post(&shared_data->semaphores[thread_num]);
 	return NULL;
 }
