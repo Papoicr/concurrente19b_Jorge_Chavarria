@@ -34,7 +34,7 @@ int main (int argc, char* argv[])
     shared_data_t* shared = (shared_data_t*) calloc(1, sizeof (shared_data_t));
     if(shared == NULL)
            return (void)fprintf(stderr,"error, couldn't allocate shared memory\n"), 1;
-    shared->thread_count = (size_t)(sysconf(_SC_NPROCESSORS_ONLN));
+    shared->thread_count = (sysconf(_SC_NPROCESSORS_ONLN));
 
     if(argc < 4){
         free(shared);
@@ -55,22 +55,27 @@ int main (int argc, char* argv[])
         free(shared);
         return (void)fprintf(stderr,"The amount of division can't be  0\n"), 1;
     }
-
+	
+	if(argc > 4){
+		shared->thread_count = strtoull(argv[4], NULL, 10);
+	}
+	
     shared->lower_bound = (double) atof(argv[1]);
     shared->upper_bound = (double) atof(argv[2]);
     shared->division_quantity = (double) atof(argv[3]);
     shared->jump = (shared->upper_bound - shared->lower_bound)/shared->division_quantity;
 
-    //Inicia el coteo del tiempo de creación
+    /*Inicia el coteo del tiempo de creación
     struct timespec start_time;
     clock_gettime(CLOCK_MONOTONIC, &start_time);
 
     //Se crean los threads
+    */
     int error = create_thread(shared);
     if (error)
         return error;
-
-    //Se determina el tiempo de creación
+/*
+    Se determina el tiempo de creación
     struct timespec finish_time;
     clock_gettime(CLOCK_MONOTONIC, &finish_time);
     ///printf("Hello world from main thread\n");
@@ -79,7 +84,7 @@ int main (int argc, char* argv[])
         + 1e-9 * (finish_time.tv_nsec - start_time.tv_nsec);
 
     printf("Execution time %.9lfs\n", elapsed_seconds);
-
+*/
     printf("the area is %f \n", shared->area);
 
     free(shared);
@@ -132,24 +137,31 @@ void* run(void* data)
     shared_data_t* shared = private->shared;
     //private->local_area = trapezoidal_area(positive_function, shared->lower_bound, shared->upper_bound, shared->division_quantity);
 
-    double local_lower_bound = shared->jump*maping(private->thread_num, shared->division_quantity, shared->thread_count);
-    double local_upper_bound = shared->jump*maping(private->thread_num+1, shared->division_quantity, shared->thread_count);
+    double local_lower_bound = shared->jump * private->thread_num;
+    double local_upper_bound = 0;
+	double area = 0;
+	
+	while(local_lower_bound < shared->upper_bound){
+			local_upper_bound = local_lower_bound + shared->jump;
+			area += shared->jump * (positive_function(local_lower_bound) + positive_function(local_upper_bound)) /2;
+			local_lower_bound += shared->jump * shared->thread_count;
+		}
 
-    private->local_area = trapezoidal_area(positive_function, local_lower_bound, local_upper_bound, shared->division_quantity);
+    //private->local_area = trapezoidal_area(positive_function, local_lower_bound, local_upper_bound, shared->division_quantity);
 
     pthread_mutex_lock(&shared->mutex);
-    shared->area += private->local_area;
+    shared->area += area;
     pthread_mutex_unlock(&shared->mutex);
     return NULL;
 }
 
 double positive_function(double x){
-    double image = sqrt((x*(pow(x,2) - 6*x + 9))/9);
+    double image = sqrt((x*pow(x-3,2))/9);
     return image;
 }
-
+/*
 double trapezoidal_area(double (*function)(double), double lower_bound, double upper_bound, double division_quantity){
-    double area = 0;
+    
     double jump = ((upper_bound-lower_bound)/division_quantity);
     while (lower_bound <  upper_bound) {
         area += (function(lower_bound) + function(lower_bound+jump));
@@ -162,3 +174,4 @@ double trapezoidal_area(double (*function)(double), double lower_bound, double u
 double maping(size_t thread_num, double divisions, double thread_count){
     return thread_num * floor(divisions/thread_count) + fmin(thread_num, fmod(divisions, thread_count));
 }
+*/

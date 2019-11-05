@@ -33,21 +33,22 @@ int main (int argc, char* argv[])
     lower_bound = atof(argv[1]);
     upper_bound = atof(argv[2]);
     divisions = atof(argv[3]);
-    //Inicia el conteo del tiempo de creación
+    /*
+    Inicia el conteo del tiempo de creación
     struct timespec start_time;
     clock_gettime(CLOCK_MONOTONIC, &start_time);
-
+*/
     area = trapezoidal_area(positive_function, lower_bound, upper_bound, divisions);
 
     //Se determina el tiempo de creación
     struct timespec finish_time;
     clock_gettime(CLOCK_MONOTONIC, &finish_time);
     ///printf("Hello world from main thread\n");
-
+/*
     double elapsed_seconds = finish_time.tv_sec - start_time.tv_sec
         + 1e-9 * (finish_time.tv_nsec - start_time.tv_nsec);
-
-    printf("Execution time %.9lfs\n Area: %f", elapsed_seconds, area);
+*/
+    printf("Area: %f", area);
 
 
     return 0;
