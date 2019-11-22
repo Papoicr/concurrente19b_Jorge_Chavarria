@@ -42,20 +42,18 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+		
+//int MPI_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm)
+		
+	//MPI_Send(&global_start, 1, MPI_INT, destination, /*tag*/ 0, MPI_COMM_WORLD);
+	//MPI_Send(&global_finish, 1, MPI_INT, destination, /*tag*/ 0, MPI_COMM_WORLD);
+
+
 		if ( my_rank == 0 )
-		{
 			std::cin >> global_start >> global_finish;
-			for ( int destination = 1; destination < process_count; ++destination )
-			{
-				MPI_Send(&global_start, 1, MPI_INT, destination, /*tag*/ 0, MPI_COMM_WORLD);
-				MPI_Send(&global_finish, 1, MPI_INT, destination, /*tag*/ 0, MPI_COMM_WORLD);
-			}
-		}
-		else
-		{
-			MPI_Recv(&global_start, 1, MPI_INT, /*source*/ 0, /*tag*/ 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-			MPI_Recv(&global_finish, 1, MPI_INT, /*source*/ 0, /*tag*/ 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		}
+		
+		MPI_Bcast(&global_start, 1, MPI_INT, /**root*/0, MPI_COMM_WORLD);
+		MPI_Bcast(&global_finish, 1, MPI_INT, /**root*/0, MPI_COMM_WORLD);
 	}
 
 	const int my_start = calculate_start( my_rank, process_count, global_finish, global_start);
@@ -66,7 +64,7 @@ int main(int argc, char* argv[])
 	// hostname1:0: range [3, 12[ size 9
 	std::cout << hostname << ":" << my_rank << ": range [" << my_start
 		<< ", " << my_finish << "[ size " << my_width
-		<< "in" << std::fixed << std::setprecision(9) << elapsed << 's' << std::endl;
+		<< " in " << std::fixed << std::setprecision(9) << elapsed << 's' << std::endl;
 
 	#pragma omp parallel default(none) shared(my_rank, hostname, std::cout)
 	{

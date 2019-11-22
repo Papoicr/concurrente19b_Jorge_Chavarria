@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 	// hostname1:0: range [3, 12[ size 9
 	std::cout << hostname << ":" << my_rank << ": range [" << my_start
 		<< ", " << my_finish << "[ size " << my_width
-		<< "in" << std::fixed << std::setprecision(9) << elapsed << 's' << std::endl;
+		<< " in " << std::fixed << std::setprecision(9) << elapsed << 's' << std::endl;
 
 	#pragma omp parallel default(none) shared(my_rank, hostname, std::cout)
 	{
