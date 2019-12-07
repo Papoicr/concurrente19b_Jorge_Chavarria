@@ -5,7 +5,7 @@ CXX=g++
 FLAGS=-g -Wall -Wextra -lm
 CFLAGS=$(FLAGS)
 CXXFLAGS=$(FLGAS)
-LIBS=-pthread
+LIBS=-lm -pthread
 CLIBS=$(LIBS)
 CXXLIBS=$(LIBS)
 
