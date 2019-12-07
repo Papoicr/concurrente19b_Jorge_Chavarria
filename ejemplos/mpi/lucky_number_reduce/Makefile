@@ -1,5 +1,5 @@
-CC=gcc
-CXX=g++
+CC=mpicc
+CXX=mpic++
 FLAGS=-g -Wall -Wextra -fopenmp
 CFLAGS=$(FLAGS) -std=gnu11
 CXXFLAGS=$(FLAGS) -std=gnu++11
@@ -23,3 +23,7 @@ $(EXECUTABLE): $(OBJECTS)
 .PHONY: clean
 clean:
 	rm -rf $(EXECUTABLE) *.o *.dSYM *~
+
+.PHONY: gitignore
+gitignore:
+	echo $(EXECUTABLE) > .gitignore
