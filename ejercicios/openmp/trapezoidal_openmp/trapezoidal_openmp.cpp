@@ -15,7 +15,7 @@ int main (int argc, char* argv[])
     double lower_bound = 0;
     double upper_bound = 0;
     int divisions = 0;
-    int thread_count = omp_get_max_threads();
+    int thread_count = 1;
 
     if(argc < 4){
         return (void)fprintf(stderr,"not enough arguments\n"), 1;
@@ -36,6 +36,7 @@ int main (int argc, char* argv[])
     if(argc >= 5)
     	thread_count = atoi(argv[4]);
 
+    std::cout << thread_count << std::endl;
 
     lower_bound = atof(argv[1]);
     upper_bound = atof(argv[2]);
@@ -70,12 +71,12 @@ double positive_function(double x){
 double trapezoidal_area(double (*function)(double), double lower_bound, double upper_bound, int division_quantity, int thread_count){
     double area = 0;
     double jump = ((upper_bound-lower_bound)/division_quantity);
-    #pragma omp parallel num_threads(thread_count) \
+    #pragma omp parallel num_threads(thread_count)  \
 		default(none) shared(lower_bound, upper_bound, division_quantity, function, area, jump, std::cout)
 	{
 		double local_area = 0.0;
 		double local_lower_bound = 0.0;
-		#pragma omp for
+		#pragma omp for schedule(static)
 		for(int iteration = 0; iteration < division_quantity; iteration++)
 		{
 			#pragma omp critical(lower_bound)

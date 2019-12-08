@@ -27,5 +27,4 @@ clean:
 
 .PHONY: gitignore
 gitignore:
-	echo $(APPNAME) > .gitignore
-
+	echo $(EXECUTABLE) > .gitignore
