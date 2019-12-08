@@ -1,3 +1,3 @@
 La función elegida es 3ay² = x(x-a)² con a = 3
 
-El trapezoidal pthreads funciona con mapeo ciclico pero tambien tiene unos métodos para usar mapeo por bloques, por eso hay unos métodos que no se usan, esto es por que originalmente había usado bloques pero era muy ineficiente, así que lo cambié cuando hice las pruebas
+En este caso la versión con openmp la ejecuté en una computadora distinta, esta vez fue en un ordenador con 8 cpus por que no pude utilizar la computadora de la U en la que había corrido las pruebas antes
