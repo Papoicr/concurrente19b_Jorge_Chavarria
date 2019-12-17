@@ -1,9 +1,22 @@
+/**
+*	Profe, al final si cambie de division en columnas a division en fila, por que intené dejarlo en columnas pero se
+*	complicaba mucho, sin embargo dejé cosas como el struct por que eran necesarias para la solucion original,
+*   de igual manera hay un error que no logré encontrar que se genera luego de la comunicación entre procesos
+*	en general, los procesos se comunica bien pero al finalizar el error que tira dice que es un problema con un free(), 
+*	busque el error por tantas horas que al final opté por quitar todos los free (sabiendo que esto genera fugas) 
+*	y aun asi el error sigue; si a la hora de revisar el codigo sabe o encuentra que lo genera agradeceria que me avisara
+*   ya que no quiero quedar con la duda.
+*/
+
 #include <mpi.h>
 #include <omp.h>
 #include <cstdlib>
 #include <string>
 #include <stdbool.h>
 #include <stddef.h>
+#include <vector>
+#include <iostream>
+#include <fstream>
 
 typedef struct
 {
@@ -14,21 +27,101 @@ typedef struct
 }coordenadas; 
 
 
-double ** crear_image(std::string nombre, int rows, int columns);
-double ** crear_mirror(int rows, int columns);
-void search_clouds(double ** image, double ** mirror, int my_start, int my_finish, coordenadas *array_coordenadas, int global_rows, int a, int b);
-void expand_cloud(int rows, int col, coordenadas* array_coordenadas, double a, double b, double**mirror, double** image, int cloud_count);
-void print_clouds(coordenadas* coordenadas);
+double **crear_image(std::string nombre, int rows, int columns);
+int **crear_mirror(int rows, int columns);
+void search_clouds(double **image, int **mirror, int my_start, int my_finish, std::vector<int>* array_coordenadas, int global_col, int a, int b);
 bool exist(int row, int col, int global_rows, int global_col);
+void expand_cloud(double ** image, int ** mirror, int my_start, int my_finish, std::vector<int>* array_coordenadas, int global_col, double a, double b, int cloud_count, int rows, int col);
+void print_clouds(std::vector<int> coordenadas);
 int calculate_start(int worker_id, int workers, int finish, int begin);
+
+int **crear_mirror(int rows, int columns){
+	int ** matriz = new int *[rows];
+	for(int index = 0; index < rows; index++){
+		matriz[index] = new int[columns];
+	}
+	return matriz;
+}
+
+double **crear_image(std::string nombre, int rows, int columns){
+	double ** matriz = new double *[rows];
+	for(int index = 0; index < rows; index++){
+		matriz[index] = new double[columns];
+	}
+	(void)(nombre);
+	return matriz;
+}
+
+void search_clouds(double ** image, int ** mirror, int my_start, int my_finish, std::vector<int>* array_coordenadas, int global_col, double a, double b){
+	//por motivos que no entiendo, si no me aseguro de que la matriz esta en 0 las 2 primeras filas de mirror toman valores extraños, esto solo sucede si es mas de un proceso
+	for (int i = 0; i < 11; ++i ){
+		for (int j = 0; j < 8; ++j){ //se cae si no se escribe el numero maximo
+			mirror[i][j] = 0;
+		}
+	}
+
+	int cloud_count = 0;
+	for (int rows = my_start; rows < my_finish; ++rows){
+		for (int col = 0; col < global_col; ++col){
+			if(mirror[rows][col] == 0){
+				if( image[rows][col] >= a && image[rows][col] <= b){
+					cloud_count++;	
+					array_coordenadas->push_back(0);
+					expand_cloud(image, mirror, my_start, my_finish, array_coordenadas, global_col, a, b, cloud_count, rows, col);
+				}
+				else
+					mirror[rows][col] = -1;
+			}
+		}
+	}
+}
+
+bool exist(int row, int col, int global_rows, int my_start, int my_finish){
+	return row >= 0 && row < global_rows && col >= 0 && col <= 8;
+}
+
+void expand_cloud(double ** image, int ** mirror, int my_start, int my_finish, std::vector<int>* array_coordenadas, int global_rows, double a, double b, int cloud_count, int rows, int col){
+	if (!exist(rows, col, global_rows, my_start, my_finish))
+		return;
+	if (mirror[rows][col] != 0)
+		return;
+	if (image[rows][col] >= a && image[rows][col] <= b){
+		array_coordenadas[0][cloud_count-1]++;
+		mirror[rows][col] = cloud_count;
+		expand_cloud(image, mirror, my_start, my_finish, array_coordenadas, global_rows, a, b, cloud_count, rows-1, col);
+		expand_cloud(image, mirror, my_start, my_finish, array_coordenadas, global_rows, a, b, cloud_count, rows, col-1);
+		expand_cloud(image, mirror, my_start, my_finish, array_coordenadas, global_rows, a, b, cloud_count, rows+1, col);
+		expand_cloud(image, mirror, my_start, my_finish, array_coordenadas, global_rows, a, b, cloud_count, rows, col+1);	
+	}
+	else
+		mirror[rows][col] = -1;
+}
+
+void print_clouds(std::vector<int> coordenadas){
+	for(int index = 0; index < (int)coordenadas.size(); index++){
+		std::cout << index+1  << " " << coordenadas[index] << std::endl;
+	}
+}
+
+int calculate_start(int worker_id, int workers, int finish, int begin)
+{
+	int range = finish - begin;
+	return begin + worker_id * (range / workers) + std::min(worker_id, range % workers);
+}
 
 int main(int argc, char *argv[])
 {
 	MPI_Init(&argc, &argv);
 	int my_rank = -1;
 	int process_count = -1;
-	coordenadas *array_coordenadas = (coordenadas*) malloc(sizeof(coordenadas)*4);
-	
+	std::vector<int> array_coordenadas;
+
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &process_count);
+
+	char hostname[MPI_MAX_PROCESSOR_NAME];
+	int hostname_length = -1;
+	MPI_Get_processor_name(hostname, &hostname_length);
 
 	int rows = 0;
 	int columns = 0;
@@ -49,163 +142,96 @@ int main(int argc, char *argv[])
 
 	double a = atof(argv[2]);
 	double b = atof(argv[3]);
-	scanf("%d", &rows);
-	scanf("%d", &columns);
+	
+	std::ifstream fe("file.txt");
+	fe >> rows >> columns;
 
-	double ** image = crear_image(argv[1], rows, columns);
-	double ** mirror = crear_mirror (rows, columns);
+	int **mirror;	 
+	mirror = crear_mirror (rows, columns);
+	double **image;
+	image = crear_image(argv[1], rows, columns);
 
-	char hostname[MPI_MAX_PROCESSOR_NAME];
-	int hostname_length = -1;
-	MPI_Get_processor_name(hostname, &hostname_length);
+	for (int i = 0; i < rows; ++i ){
+		for (int j = 0; j < columns; ++j){
+			fe >> image[i][j]; 
+		}
+	}
+	fe.close();
 
 	int my_start = calculate_start(my_rank, process_count, rows, 0);
 	int my_finish = calculate_start(my_rank+1, process_count, rows, 0);
 
-	search_clouds (image, mirror, my_start, my_finish, array_coordenadas, rows, a, b);
+	search_clouds(image, mirror, my_start, my_finish, &array_coordenadas, rows, a, b);
+	if(process_count > 1){
+		if(my_rank > 0){
+			int size = 0;
+				
+			MPI_Recv(&size, 1, MPI_INT, my_rank-1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			std::vector<int> array_buffer;
+			array_buffer.resize(size);
+			MPI_Recv(&array_buffer[0], array_buffer.size(), MPI_INT, my_rank-1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-	if(my_rank == 0){
-		int size = 0;
-		
-		coordenadas *array_buffer = (coordenadas*) malloc (sizeof(coordenadas)*size);
+			std::vector<int> vector_row;
+			std::vector<int> brows;
 			
-		for (int index = 0; index < process_count; ++index){
-			MPI_Recv(&size, 1, MPI_INT, index, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-			MPI_Recv(&array_buffer, 1, coordenadas_nube, index, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			vector_row.resize(columns);
 
-			double *column = (double*) malloc(sizeof(double)*rows);
-			double *bcolumns = (double*) malloc(sizeof(double)*rows);
-			MPI_Recv(&bcolumns, 1, MPI_DOUBLE, index, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		
-			for(int cindex = 0; cindex < columns; cindex++){
-				column[cindex] = mirror [my_finish][cindex];
+			for(int rindex = 0; rindex < columns; rindex++){
+				brows.push_back(mirror[my_start][rindex]);
 			}
-
-			for(int cindex = 0; cindex < columns; cindex++){
-				if(column[cindex] != 0 && bcolumns[cindex] != 0){
-					if(array_coordenadas[(int)(column[cindex] -1)].rows < array_buffer[(int)(bcolumns[cindex]-1)].rows){
-						array_coordenadas[(int)(column[cindex]-1)].area += array_buffer[(int)(bcolumns[cindex]-1)].area;
-						array_buffer[(int)(bcolumns[cindex]-1)].cloud_id = 0;
+			MPI_Recv(&vector_row[0], vector_row.size(), MPI_DOUBLE, my_rank-1, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			for(size_t rindex = 0; rindex < vector_row.size(); rindex++){
+				if(vector_row[rindex] > 0 && brows[rindex] > 0){
+					if(mirror[my_finish-1][rindex] == brows[rindex]){
+						mirror[my_finish-1][rindex] = vector_row[rindex];
 					}
 					else{
-						if (array_coordenadas[(int)(column[cindex] -1)].rows > array_buffer[(int)(bcolumns[cindex]-1)].rows){
-							array_buffer[(int)(bcolumns[cindex]-1)].area += array_coordenadas[(int)(column[cindex]-1)].area;
-							array_coordenadas[(int)(bcolumns[cindex]-1)].cloud_id = 0;
-						}
-						else{
-							array_coordenadas[(int)(column[cindex]-1)].area += array_buffer[(int)(bcolumns[cindex]-1)].area;
-							array_buffer[(int)(bcolumns[cindex]-1)].cloud_id = 0;
-						}
+						if(mirror[my_finish-1][rindex]>0)
+							mirror[my_finish-1][rindex] += (int)array_coordenadas.size();
+					}
+					array_buffer[brows[rindex]] += array_coordenadas[vector_row[rindex]] ;
+					array_coordenadas.erase(array_buffer.begin() + (brows[rindex]-1));
+				}
+				else{
+					if(mirror[my_finish-1][rindex] > 0){
+						mirror[my_finish-1][rindex] += array_coordenadas.size();
 					}
 				}
 			}
-			int new_tamanio = size + sizeof(array_coordenadas);
-			coordenadas *new_array = (coordenadas*) malloc(sizeof(int)*new_tamanio);
-			int contador1 = 0;
-			int contador2 = 0;
-			int itr = 0;
 
-			while(contador1 < (int)sizeof(array_coordenadas) || contador2 < size){
-				if(array_coordenadas[contador1].cloud_id < array_buffer[contador2].cloud_id	){
-					new_array[itr] = array_coordenadas[contador1];
-					contador1++;
-				}
-				else{
-					new_array[itr] = array_buffer[contador2];
-					contador2++;
-				}
-				itr++;
+			for(int itr = 0; itr < array_coordenadas.size(); ++itr){
+				array_buffer.push_back(array_coordenadas[itr]);
 			}
-			coordenadas* temp = array_coordenadas;
-			array_coordenadas = new_array;
-			free(temp);
- 			}
- 		}
- 		else{
- 			int size = (int)sizeof(array_coordenadas);
- 			coordenadas *array_buffer = array_coordenadas;
- 			//double *column = (double*) malloc(sizeof(double)*rows);
- 			//column = mirror[my_finish];
- 			MPI_Send(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
- 			MPI_Send(&array_buffer, 1, coordenadas_nube, 0, 0, MPI_COMM_WORLD);
- 			MPI_Send(&size, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
- 		}
-
- 		if(my_rank == 0){
- 			print_clouds(array_coordenadas);
- 		MPI_Finalize();
-		return 0;
-}
-}
-
-double ** crear_mirror(int rows, int columns){
-	double ** matriz = (double**)calloc(columns, sizeof(double*));
-	for(int index = 0; index < rows; index++){
-		matriz[index] = (double*)calloc(columns, sizeof(double));
-	}
-	return matriz;
-}
-
-double ** crear_image(std::string nombre, int rows, int columns){
-	double ** matriz = crear_mirror(rows, columns);
-	(void)(nombre);
-	/*
-	archivo = open(nombre);
-	for(int rindex = 0; rindex < rows; ++index){
-		scanf(%f, matriz[rindex][cindex], archivo);
-	}*/
-	return matriz;
-}
-
-void search_clouds(double ** image, double ** mirror, int my_start, int my_finish, coordenadas *array_coordenadas, int global_rows, int a, int b){
-	(void)image;
-	int cloud_count = 0;
-	for (int rows = 0; rows < global_rows; ++rows){
-		for (int col = my_start; col < my_finish; ++col){
-			if(mirror[rows][col] == 0){
-				array_coordenadas[cloud_count].cloud_id = cloud_count;
-				array_coordenadas[cloud_count].area = 0;
-				expand_cloud(rows, col, array_coordenadas, a, b, mirror, image, cloud_count);
-				cloud_count++;
+			
+			if(my_rank < process_count-1){
+				int size = (int)array_buffer.size();
+	 			MPI_Send(&size, 1, MPI_INT, my_rank+1, 0, MPI_COMM_WORLD);
+	 			MPI_Send(&array_buffer[0], array_buffer.size(), coordenadas_nube, my_rank+1, 1, MPI_COMM_WORLD);
+	 			
+	 			for(int rindex = 0; rindex < rows; rindex++){
+					vector_row.push_back(mirror[my_finish][rindex]);
+				}
+	 			MPI_Send(&vector_row[0], vector_row.size(), MPI_DOUBLE, my_rank+1, 2, MPI_COMM_WORLD);
 			}
-			else
-				mirror[rows][col] = -1;
-		}
+	 	}
+	 	else{
+	 		std::vector<int> array_buffer = array_coordenadas;
+	 		std::vector<int> vector_row;
+	 		int size = (int)array_buffer.size();
+			MPI_Send(&size, 1, MPI_INT, my_rank+1, 0, MPI_COMM_WORLD);
+			MPI_Send(&array_buffer[0], array_buffer.size(), MPI_INT, my_rank+1, 1, MPI_COMM_WORLD);
+		 	
+			for(int rindex = 0; rindex < columns; rindex++){
+				vector_row.push_back(mirror[my_finish][rindex]);
+			}
+	 		MPI_Send(&vector_row[0], vector_row.size(), MPI_DOUBLE, my_rank+1, 2, MPI_COMM_WORLD);
+	 	}
 	}
-}
 
-
-void expand_cloud(int rows, int col, coordenadas* array_coordenadas, double a, double b, double**mirror, double** image, int cloud_count){
-	int global_rows = 0;
-	int global_col = 0;
-	if (!exist(rows, col, global_rows, global_col))
-		return;
-	if (mirror[rows][col] != 0)
-		return;
-	if (a <= image[rows][col] && b >= image[rows][col]){
-		mirror[rows][col] = array_coordenadas[cloud_count].cloud_id;
-		array_coordenadas[cloud_count].area++;
-		expand_cloud(rows, col, array_coordenadas, a, b, mirror, image, cloud_count);
-		expand_cloud(rows, col, array_coordenadas, a, b, mirror, image, cloud_count);
-		expand_cloud(rows, col, array_coordenadas, a, b, mirror, image, cloud_count);
-		expand_cloud(rows, col, array_coordenadas, a, b, mirror, image, cloud_count);	
+	if(my_rank == process_count-1){
+		print_clouds(array_coordenadas);
 	}
-	else
-		mirror[rows][col] = -1;
-}
 
-void print_clouds(coordenadas* coordenadas){
-	for(int index = 0; index < (int)sizeof(coordenadas); index++){
-		printf("%d: %d", index, coordenadas[index].area);
-	}
-}
-
-bool exist(int row, int col, int global_rows, int global_col){
-	return row >= 0 && row < global_rows && col >= 0 && col <= global_col;
-}
-
-int calculate_start(int worker_id, int workers, int finish, int begin)
-{
-	int range = finish - begin;
-	return begin + worker_id * (range / workers) + std::min(worker_id, range % workers);
+	MPI_Finalize();
+	return 0;
 }

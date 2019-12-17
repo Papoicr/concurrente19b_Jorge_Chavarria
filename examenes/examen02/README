@@ -1,0 +1,7 @@
+Profe, al final si cambie de division en columnas a division en fila, por que intené dejarlo en columnas pero se
+complicaba mucho, sin embargo dejé cosas como el struct por que eran necesarias para la solucion original,
+de igual manera hay un error que no logré encontrar que se genera luego de la comunicación entre procesos
+en general, los procesos se comunica bien pero al finalizar el error que tira dice que es un problema con un free(), 
+busque el error por tantas horas que al final opté por quitar todos los free (sabiendo que esto genera fugas) 
+y aun asi el error sigue; si a la hora de revisar el codigo sabe o encuentra que lo genera agradeceria que me avisara
+ya que no quiero quedar con la duda.
